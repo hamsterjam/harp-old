@@ -1,4 +1,4 @@
 Harp
 ====
 
-This is supposed to be a very simple demonstrator for doing platforming in a platformer style game.
+This is supposed to be a very simple demonstrator for doing pathfinding in a platformer style game.
