@@ -24,7 +24,7 @@ OBJECTS = $(filter-out main.o,$(CPP_FILES:.cpp=.o))
 #Globals
 CXX = g++
 CFLAGS = -std=gnu++11
-LFLAGS = `pkg-config --libs allegro-5 allegro_image-5`
+LFLAGS = -I$(HEADER_DIR) `pkg-config --libs allegro-5 allegro_image-5`
 
 #Debug Varibales
 DEBUG_TARGET = $(NAME)_debug
@@ -71,6 +71,10 @@ pre_release: pre_pre
 	@[ -d $(RELEASE_OBJECT_DIR) ] || mkdir $(RELEASE_OBJECT_DIR)
 	@[ "$(ls -A temp)" ] && cp -r temp/* $(DEBUG_OBJECT_DIR) || :
 	@rm -r temp
+
+%-test: test/%.cpp pre_debug $(DEBUG_OBJECTS)
+	@echo 'Compiling test build...'
+	@$(CXX) $(DEBUG_CFLAGS) $(DEBUG_OBJECTS) $< -o $@ $(DEBUG_LFLAGS)
 
 pre_pre:
 	@[ -d $(OBJECT_DIR) ] || mkdir $(OBJECT_DIR)
