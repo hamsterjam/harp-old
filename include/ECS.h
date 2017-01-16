@@ -1,5 +1,5 @@
-#ifndef __GALAXY_FORT_ECS_H
-#define __GALAXY_FORT_ECS_H
+#ifndef __HARP_ECS_H
+#define __HARP_ECS_H
 
 #include <initializer_list>
 #include <vector>
