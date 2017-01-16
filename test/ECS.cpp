@@ -132,6 +132,57 @@ int main() {
         assert(entCount == 1);
     }
 
+    // Time to test the update function
+    {
+        // Going to use ent3 which has both components
+        int inputInt;
+        vec inputVec;
+
+        inputInt = 5;       // Current: 3
+
+        inputVec.x = 51;    // Current: 31
+        inputVec.y = 52;    // Current: 32
+        inputVec.z = 53;    // Current: 33
+
+        ecs.setComponent(ent3, intComp, &inputInt);
+        ecs.setComponent(ent3, vecComp, &inputVec);
+
+        // Changes should be queued, but not updated
+
+        int outputInt;
+        vec outputVec;
+
+        outputInt = *((int*) ecs.getComponent(ent3, intComp));
+        outputVec = *((vec*) ecs.getComponent(ent3, vecComp));
+
+        assert(outputInt == 3);
+        assert(outputVec.x == 31);
+        assert(outputVec.y == 32);
+        assert(outputVec.z == 33);
+
+        // Now we update and check that things have actually changed
+        ecs.updateComponents();
+
+        outputInt = *((int*) ecs.getComponent(ent3, intComp));
+        outputVec = *((vec*) ecs.getComponent(ent3, vecComp));
+
+        assert(outputInt == 5);
+        assert(outputVec.x == 51);
+        assert(outputVec.y == 52);
+        assert(outputVec.z == 53);
+
+        // Quickly check the remove works as intended as well
+        ecs.removeComponent(ent3, vecComp);
+
+        // Should still be there
+        assert(ecs.getComponent(ent3, vecComp));
+
+        ecs.updateComponents();
+
+        // Now it should be gone
+        assert(!ecs.getComponent(ent3, vecComp));
+    }
+
     // Could probably be more exhaustive, but that's enough I think.
     cout << "Everything looks good!" << endl;
 
