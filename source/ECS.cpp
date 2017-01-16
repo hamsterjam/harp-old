@@ -106,19 +106,6 @@ Component ECS::createComponentType(size_t size) {
     return nextComp++;
 }
 
-// Changing this so setting a component doesnt change the value immediatly
-/*
-void ECS::setComponent(Entity ent, Component comp, void* val) {
-    // Make sure you set it to actually having the component
-    hasComp[comp][ent] = true;
-
-    // Now just memcpy it into place, easy
-    size_t size = compSize[comp];
-    // Cast to char to do clean pointer arithmetic
-    memcpy(((char*) data[comp]) + size * ent, val, size);
-}
-*/
-
 void ECS::setComponent(Entity ent, Component comp, void* val) {
     // We need to allocate new memory for the data so we have ownership,
     // there are a couple of ways to speed this up (pool allocators for one)
