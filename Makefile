@@ -24,7 +24,7 @@ OBJECTS = $(filter-out main.o,$(CPP_FILES:.cpp=.o))
 #Globals
 CXX = g++
 CFLAGS = -std=gnu++11
-LFLAGS = -I$(HEADER_DIR) `pkg-config --libs allegro-5 allegro_image-5`
+LFLAGS = -I$(HEADER_DIR) `pkg-config --libs allegro-5 allegro_image-5 allegro_primitives-5`
 
 #Debug Varibales
 DEBUG_TARGET = $(NAME)_debug

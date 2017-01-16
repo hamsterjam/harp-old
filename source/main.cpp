@@ -1,5 +1,6 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
+#include <allegro5/allegro_primitives.h>
 
 #include <iostream>
 using namespace std;
@@ -104,9 +105,15 @@ void allegroInit() {
       cerr << "Failed to initialise Allegro." << endl;
       exit(1);
    }
+   // Image Addon
    if (!al_init_image_addon()) {
       cerr << "Failed to initialise Allegro image addon." << endl;
       exit(1);
+   }
+   // Primitives Addon
+   if (!al_init_primitives_addon()) {
+       cerr << "Failed to initialsie Allegro primitives addon." << endl;
+       exit(1);
    }
    if (!al_install_keyboard()) {
       cerr << "Failed to install keyboard." << endl;
