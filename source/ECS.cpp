@@ -106,6 +106,8 @@ Component ECS::createComponentType(size_t size) {
     return nextComp++;
 }
 
+// Changing this so setting a component doesnt change the value immediatly
+/*
 void ECS::setComponent(Entity ent, Component comp, void* val) {
     // Make sure you set it to actually having the component
     hasComp[comp][ent] = true;
@@ -114,6 +116,24 @@ void ECS::setComponent(Entity ent, Component comp, void* val) {
     size_t size = compSize[comp];
     // Cast to char to do clean pointer arithmetic
     memcpy(((char*) data[comp]) + size * ent, val, size);
+}
+*/
+
+void ECS::setComponent(Entity ent, Component comp, void* val) {
+    // We need to allocate new memory for the data so we have ownership,
+    // there are a couple of ways to speed this up (pool allocators for one)
+
+    size_t size = compSize[comp];
+    void* valCopy = malloc(size);
+    memcpy((char*) valCopy, val, size);
+
+    // Create the change request and add it to the queue
+    ChangeRequest req;
+    req.ent = ent;
+    req.comp = comp;
+    req.val = valCopy;
+
+    changeQueue.push(req);
 }
 
 void* ECS::getComponent(Entity ent, Component comp) {
@@ -134,7 +154,16 @@ void ECS::removeComponent(Entity ent, Component comp) {
 }
 
 void ECS::updateComponents() {
-    // Placeholder
+    while(!changeQueue.empty()) {
+        ChangeRequest req = changeQueue.front();
+
+        hasComp[req.comp][req.ent] = true;
+        size_t size = compSize[req.comp];
+        memcpy(((char*) data[req.comp]) + size * req.ent, req.val, size);
+        free(req.val);
+
+        changeQueue.pop();
+    }
 }
 
 //

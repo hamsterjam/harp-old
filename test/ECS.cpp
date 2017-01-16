@@ -38,6 +38,7 @@ int main() {
     {
         int input = 1;
         ecs.setComponent(ent1, intComp, &input);
+        ecs.updateComponents();
 
         // This looks a little awkward, remember that it gives you a void* which you
         // have to cast and dereference yourself, thats all I'm doing
@@ -54,6 +55,7 @@ int main() {
         input.y = 12;
         input.z = 13;
         ecs.setComponent(ent1, vecComp, &input);
+        ecs.updateComponents();
 
         vec output = *((vec*)ecs.getComponent(ent1, vecComp));
 
@@ -98,6 +100,8 @@ int main() {
         inputVec.y = 42;
         inputVec.z = 43;
         ecs.setComponent(ent4, vecComp, &inputVec);
+
+        ecs.updateComponents();
     }
 
     // Now check to see if the system functions work

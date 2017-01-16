@@ -1,6 +1,5 @@
 #ifndef __HARP_ECS_H
 #define __HARP_ECS_H
-
 #include <initializer_list>
 #include <vector>
 #include <queue>
@@ -10,6 +9,12 @@ typedef unsigned int Component;
 
 class ECS {
     private:
+        struct ChangeRequest {
+            Entity ent;
+            Component comp;
+            void* val;
+        };
+
         Entity    nextEnt;
         Component nextComp;
 
@@ -17,6 +22,7 @@ class ECS {
         unsigned int compVecLength;
 
         std::queue<Entity> entRecycleQueue;
+        std::queue<ChangeRequest> changeQueue;
 
         std::size_t* compSize;
         bool** hasComp;
