@@ -132,6 +132,7 @@ void ECS::setComponent(Entity ent, Component comp, void* val) {
     req.ent = ent;
     req.comp = comp;
     req.val = valCopy;
+    req.remove = false;
 
     changeQueue.push(req);
 }
@@ -150,17 +151,27 @@ void* ECS::getComponent(Entity ent, Component comp) {
 void ECS::removeComponent(Entity ent, Component comp) {
     // Just set the hasComp to false, don't bother with the data
 
-    hasComp[comp][ent] = false;
+    ChangeRequest req;
+    req.ent = ent;
+    req.comp = comp;
+    req.remove = true;
+
+    changeQueue.push(req);
 }
 
 void ECS::updateComponents() {
     while(!changeQueue.empty()) {
         ChangeRequest req = changeQueue.front();
 
-        hasComp[req.comp][req.ent] = true;
-        size_t size = compSize[req.comp];
-        memcpy(((char*) data[req.comp]) + size * req.ent, req.val, size);
-        free(req.val);
+        if (req.remove) {
+            hasComp[req.comp][req.ent] = false;
+        }
+        else {
+            hasComp[req.comp][req.ent] = true;
+            size_t size = compSize[req.comp];
+            memcpy(((char*) data[req.comp]) + size * req.ent, req.val, size);
+            free(req.val);
+        }
 
         changeQueue.pop();
     }

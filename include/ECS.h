@@ -13,6 +13,7 @@ class ECS {
             Entity ent;
             Component comp;
             void* val;
+            bool remove;
         };
 
         Entity    nextEnt;

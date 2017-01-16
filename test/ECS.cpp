@@ -67,6 +67,7 @@ int main() {
     // Now test removing components
     {
         ecs.removeComponent(ent1, intComp);
+        ecs.updateComponents();
         void* intOut = ecs.getComponent(ent1, intComp);
 
         assert(!intOut);
