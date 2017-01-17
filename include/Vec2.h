@@ -3,8 +3,6 @@
 
 #include <cmath> // for sqrt
 
-#include <iostream> // DEBUG
-
 template <typename T>
 class Vec2 {
     public:
