@@ -1,10 +1,14 @@
 #include <ECS.h>
+
 #include <cstdlib>
 #include <cstring> // for memcpy
 
+#include <DynamicPoolAllocator.h>
+
 using namespace std;
 
-ECS::ECS(unsigned int entVecLength, unsigned int compVecLength) {
+ECS::ECS(unsigned int entVecLength, unsigned int compVecLength, size_t poolSize):
+        changePool(poolSize) {
     this->entVecLength  = entVecLength;
     this->compVecLength = compVecLength;
 
@@ -107,11 +111,10 @@ Component ECS::createComponentType(size_t size) {
 }
 
 void ECS::setComponent(Entity ent, Component comp, void* val) {
-    // We need to allocate new memory for the data so we have ownership,
-    // there are a couple of ways to speed this up (pool allocators for one)
+    // We need to allocate new memory for the data so we have ownership
 
     size_t size = compSize[comp];
-    void* valCopy = malloc(size);
+    void* valCopy = changePool.alloc(size);
     memcpy((char*) valCopy, val, size);
 
     // Create the change request and add it to the queue
@@ -157,11 +160,12 @@ void ECS::updateComponents() {
             hasComp[req.comp][req.ent] = true;
             size_t size = compSize[req.comp];
             memcpy(((char*) data[req.comp]) + size * req.ent, req.val, size);
-            free(req.val);
         }
 
         changeQueue.pop();
     }
+
+    changePool.freeAll();
 }
 
 //

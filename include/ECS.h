@@ -1,8 +1,11 @@
 #ifndef __HARP_ECS_H
 #define __HARP_ECS_H
+#include <cstddef>
 #include <initializer_list>
 #include <vector>
 #include <queue>
+
+#include <DynamicPoolAllocator.h>
 
 typedef unsigned int Entity;
 typedef unsigned int Component;
@@ -25,6 +28,8 @@ class ECS {
         std::queue<Entity> entRecycleQueue;
         std::queue<ChangeRequest> changeQueue;
 
+        DynamicPoolAllocator changePool;
+
         std::size_t* compSize;
         bool** hasComp;
         void** data;
@@ -46,7 +51,7 @@ class ECS {
                 Entity operator*() {return ent;}
         };
 
-        ECS(unsigned int entVecLength, unsigned int compVecLength);
+        ECS(unsigned int entVecLength, unsigned int compVecLength, std::size_t poolSize);
         ~ECS();
 
         Entity createEntity();

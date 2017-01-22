@@ -13,7 +13,7 @@ struct vec {
 int main() {
     // First create the ECS
     // Usign entVecLength = compVecLength = 1 to test auto expansion
-    ECS ecs(1, 1);
+    ECS ecs(1, 1, 128);
 
     // Create some components, one with a primative, the other with a struct
     Component intComp = ecs.createComponentType(sizeof(int));
