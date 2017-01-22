@@ -2,16 +2,11 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
 
+#include <globals.h>
+
 #include <iostream>
+
 using namespace std;
-
-ALLEGRO_DISPLAY* disp;
-ALLEGRO_TIMER* timer;
-ALLEGRO_EVENT_QUEUE* eq;
-
-const float FRAME_TIME = 1.0/60;
-const unsigned int SCREEN_WIDTH = 640;
-const unsigned int SCREEN_HEIGHT = 480;
 
 void allegroInit();
 void allegroCleanup();
