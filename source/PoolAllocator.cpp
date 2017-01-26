@@ -17,6 +17,12 @@ void* PoolAllocator::alloc(size_t size) {
     if (allocatedSize + size > poolSize) {
         return NULL;
     }
+
+    // Returning null makes this more safe.
+    if (size == 0) {
+        return NULL;
+    }
+
     // else
 
     // Cast to char* and back as pointer arithmetic on void* is technically UB.

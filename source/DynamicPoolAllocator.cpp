@@ -87,6 +87,11 @@ void* DynamicPoolAllocator::alloc(size_t size) {
         return NULL;
     }
 
+    // If size is 0 we should return null to be safe(r)
+    if (size == 0) {
+        return NULL;
+    }
+
     if (currentPoolAllocatedSize + size > poolSize) {
         ++filledPools;
         currentPoolAllocatedSize = 0;
