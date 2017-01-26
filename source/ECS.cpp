@@ -168,6 +168,25 @@ void ECS::updateComponents() {
     changePool.freeAll();
 }
 
+// Zero sized components
+
+Component ECS::createFlagComponentType() {
+    return createComponentType(0);
+}
+
+void ECS::setFlagComponent(Entity ent, Component flag, bool val) {
+    if (val) {
+        setComponent(ent, flag, NULL);
+    }
+    else {
+        removeComponent(ent, flag);
+    }
+}
+
+bool ECS::getFlagComponent(Entity ent, Component flag) {
+    return getComponent(ent, flag);
+}
+
 //
 // System functions
 //

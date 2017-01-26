@@ -183,6 +183,21 @@ int main() {
         assert(!ecs.getComponent(ent3, vecComp));
     }
 
+    // Zero sized components
+    {
+        Component flag = ecs.createFlagComponentType();
+
+        ecs.setFlagComponent(ent1, flag, true);
+        ecs.updateComponents();
+
+        assert(ecs.getFlagComponent(ent1, flag));
+
+        ecs.setFlagComponent(ent1, flag, false);
+        ecs.updateComponents();
+
+        assert(!ecs.getFlagComponent(ent1, flag));
+    }
+
     // Could probably be more exhaustive, but that's enough I think.
     cout << "Everything looks good!" << endl;
 

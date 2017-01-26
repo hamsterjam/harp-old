@@ -63,6 +63,15 @@ class ECS {
         void* getComponent(Entity ent, Component comp);
         void  removeComponent(Entity ent, Component comp);
 
+        // Zero sized components
+        //
+        // Technically these work by passing in NULL for the value and 0 for the size, but
+        // adding in some wrappers makes it more... nice? I guess?
+
+        Component createFlagComponentType();
+        void setFlagComponent(Entity ent, Component flag, bool val);
+        bool getFlagComponent(Entity ent, Component flag);
+
         void  updateComponents();
 
         EntityIterator begin(std::initializer_list<Component> comps);
